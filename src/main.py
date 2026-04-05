@@ -11,13 +11,24 @@ tf.random.set_seed(1234)
 
 #####################################################
 
-DATA_DIR = tf.keras.utils.get_file(
-    "modelnet.zip",
-    "http://3dvision.princeton.edu/projects/2014/3DShapeNets/ModelNet10.zip",
-    extract=True,
-)
-DATA_DIR = os.path.join(os.path.dirname(DATA_DIR), "ModelNet10")
+# 1. Limpeza e download
+!rm -rf /content/ModelNet10*
+!wget http://3dvision.princeton.edu/projects/2014/3DShapeNets/ModelNet10.zip -P /content/
+!unzip /content/ModelNet10.zip -d /content/
 
+# 2. Verificação
+
+DATA_DIR = "/content/ModelNet10" # Tente também "/content/ModelNet10/ModelNet10" se necessário
+print("Estrutura:", os.listdir(DATA_DIR))
+
+# 3. Carregue um arquivo QUE EXISTE (ajuste o nome)
+caminho = os.path.join(DATA_DIR, "chair/train/chair_0001.off")
+if os.path.exists(caminho):
+  mesh = trimesh.load(caminho)
+  mesh. show()
+else:
+  print("Listando arquivos .off disponíveis:")
+  !find {DATA_DIR} -name " *.off" | head -10 # Mostra 10 arquivos .off
 #####################################################
 
 mesh = trimesh.load(os.path.join(DATA_DIR, "chair/train/chair_0002.off"))
